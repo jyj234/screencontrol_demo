@@ -287,6 +287,7 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(4),
+
                         ),
                         child: const Icon(Icons.add, size: 40),
                       ),
