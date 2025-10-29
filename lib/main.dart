@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: Column(
           children: <Widget>[
-                  HomePage()
+                   Expanded(child: HomePage()),
           ],
         ),
       ),

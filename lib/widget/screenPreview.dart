@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import '../base/contentItem.dart';
+import '../xmlFileGenerator/modelDefine.dart';
 import 'contentWidget.dart';
 
 /// 可堆叠内容组件
 class ScreenPreview extends StatefulWidget {
   /// 内容项列表的 ValueNotifier
-  final ValueNotifier<List<ContentItem>> itemsNotifier;
+  final ValueNotifier<List<CommonPanel>> itemsNotifier;
 
   /// 背景颜色（默认为黑色）
   final Color backgroundColor;
@@ -22,10 +23,10 @@ class ScreenPreview extends StatefulWidget {
   /// 是否显示控制面板
   final bool showControlPanel;
 
-  final ContentItem? selectedItem;
+  final CommonPanel? selectedItem;
 
-  final double scrrenW;
-  final double scrrenH;
+  final int scrrenW;
+  final int scrrenH;
 
 
   const ScreenPreview({
@@ -73,23 +74,26 @@ class _ScreenPreviewState extends State<ScreenPreview> {
   @override
   Widget build(BuildContext context) {
     final items = widget.itemsNotifier.value;
-    final sortedItems = List<ContentItem>.from(items)
-      ..sort((a, b) => a.zIndex.compareTo(b.zIndex));
+    final sortedItems = List<CommonPanel>.from(items)
+      ..sort((a, b) => a.zOrder.compareTo(b.zOrder));
 
     return Container(
-      width: widget.scrrenW,
-      height: widget.scrrenH,
+      width: widget.scrrenW.toDouble(),
+      height: widget.scrrenH.toDouble(),
       color: Colors.black,
       child: Stack(
         children: <Widget>[
           for (var i = 0; i < sortedItems.length; i++)
             Positioned(
-              left: sortedItems[i].position.dx,
-              top: sortedItems[i].position.dy,
-              child: ContentWidget(
+              left: sortedItems[i].x.toDouble(),
+              top: sortedItems[i].y.toDouble(),
+              child: CarouselContentWidget(
                 onTap: () => _handleItemSelected(items.indexOf(sortedItems[i])),
                 item: sortedItems[i],
                 isSelected: widget.selectedItem == sortedItems[i],
+                screenPreviewH: widget.scrrenH.toDouble(),
+                screenPreviewW: widget.scrrenW.toDouble(),
+                isListItem: false,
               ),
             ),
         ],
